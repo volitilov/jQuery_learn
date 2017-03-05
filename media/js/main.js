@@ -38,25 +38,40 @@ $j(function() {
 
 $j(function() {
 
-	$('.class').on('click.a.b', function(){
+	$j('.class').on('click.a.b', function(){
 		// для пространства имён a и b
 	});
 	// вызываем обработчик из пространства a
-	$('.class').trigger('click.a');
+	$j('.class').trigger('click.a');
 	// отменяем обработчик click для пространства b
-	$('.class').unbind('click.b');
+	$j('.class').unbind('click.b');
 
 });
 
 $j(function() {
 	// обработчик клика
-	$('.class').on('click.namespace', function(){});
+	$j('.class').on('click.namespace', function(){});
 	// обработчик фокус
-	$('.class').on('blur.namespace', function(){});
+	$j('.class').on('blur.namespace', function(){});
 	// передумали, и все отменили
-	$('.class').unbind('.namespace');
+	$j('.class').unbind('.namespace');
 });
 
 $j(function() {
-
+	$j('form').submit(function(){
+		// чистим ошибки
+		$j(this).find('.error').remove();
+		// проверяем поля формы
+		if ($j(this).find('input[type=name]').val() == '') {
+			$j(this).find('input[name=user]')
+					.before('<div class="error">Введите имя</div>');
+			return false;
+		}
+		// всё хорошо – отправляем запрос на сервер
+		$j.post(
+			$j(this).attr('action'), // ссылка куда отправляем данные
+			$j(this).serialize() // данные формы
+		);
+		return false;
+	});
 });
